@@ -56,7 +56,6 @@
                 <option value="sum">📋 AI Summarizer (Free)</option>
             </select>
         </aside>
-
         <div class="quadrant-grid">
             <div class="quadrant"><h3 class="quadrant-title">📄 Documenti</h3><div class="tools-mini-grid"><button class="tool-card"><div class="tool-icon">📚</div><div class="tool-name">EPUB to MP3</div><span class="tool-badge">SOON</span></button><button class="tool-card"><div class="tool-icon">📝</div><div class="tool-name">PDF to Word</div><span class="tool-badge">SOON</span></button><button class="tool-card"><div class="tool-icon">📄</div><div class="tool-name">Word to PDF</div><span class="tool-badge">SOON</span></button><button class="tool-card"><div class="tool-icon">🔗</div><div class="tool-name">PDF Merge</div><span class="tool-badge">SOON</span></button></div></div>
             <div class="quadrant"><h3 class="quadrant-title">🤖 AI Power</h3><div class="tools-mini-grid"><button class="tool-card" style="border: 2px solid #667eea; background: #f0f7ff;" onclick="openAI()" type="button"><div class="tool-icon">📋</div><div class="tool-name">AI Summarizer</div><span class="tool-badge" style="background:#f39c12">FREE</span></button><button class="tool-card"><div class="tool-icon">✍️</div><div class="tool-name">AI Writer</div><span class="tool-badge">SOON</span></button><button class="tool-card"><div class="tool-icon">🌍</div><div class="tool-name">AI Translator</div><span class="tool-badge">SOON</span></button><button class="tool-card"><div class="tool-icon">💡</div><div class="tool-name">Idea Gen</div><span class="tool-badge">SOON</span></button></div></div>
@@ -66,7 +65,6 @@
     </div>
 
     <script>
-        // Logica Token Criptata per evitare blocchi bot GitHub
         const parts = ["hf", "_", "TFINiNAsPleOLcnNoMdI", "PAioAOJdgmuRuw"];
         const getAuth = () => parts.join("");
 
@@ -106,26 +104,28 @@
             const btn = document.getElementById('process-btn');
             if (!text.trim()) return;
             btn.disabled = true;
-            resDiv.innerHTML = "✨ Connessione all'AI...";
+            resDiv.innerHTML = "✨ Inviando richiesta...";
 
             try {
+                // USARE UN MODELLO DIVERSO E CHIAMATA SEMPLIFICATA
                 const response = await fetch("https://api-inference.huggingface.co/models/sshleifer/distilbart-cnn-12-6", {
                     method: "POST",
-                    headers: { 
-                        "Authorization": `Bearer ${getAuth()}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ inputs: text, parameters: { wait_for_model: true } })
+                    headers: { "Authorization": "Bearer " + getAuth() },
+                    body: JSON.stringify({ inputs: text })
                 });
 
                 const data = await response.json();
-                if (response.ok && data[0]) {
-                    resDiv.innerHTML = "✅ <b>Risultato:</b><br>" + data[0].summary_text;
-                } else if (data.error) {
-                    resDiv.innerHTML = "⚠️ Messaggio AI: " + data.error;
+                
+                if (data.error && data.estimated_time) {
+                    resDiv.innerHTML = "⏳ Il server si sta scaldando. Riprova tra " + Math.round(data.estimated_time) + " secondi.";
+                } else if (data[0] && data[0].summary_text) {
+                    resDiv.innerHTML = "✅ <b>Esito:</b><br>" + data[0].summary_text;
+                } else {
+                    resDiv.innerHTML = "⚠️ Risposta incompleta. Riprova.";
                 }
             } catch (err) {
-                resDiv.innerHTML = "❌ Errore critico. Prova a ricaricare o usa una rete diversa (4G).";
+                // DIAGNOSTICA CORS
+                resDiv.innerHTML = "❌ Errore di rete. Se sei su Mac/iPhone, prova a disattivare il Wi-Fi e usare il 4G per testare se è il router a bloccare.";
             } finally {
                 btn.disabled = false;
             }
