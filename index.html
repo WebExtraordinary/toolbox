@@ -6,44 +6,65 @@
     <title>ToolBox PRO - Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
+        /* RESET E BASE */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; color: #2c3e50; display: flex; flex-direction: column; }
-        .header { background: rgba(255, 255, 255, 0.98); padding: 0.5rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000; }
-        .header-content { max-width: 1400px; margin: 0 auto; padding: 0 1rem; display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.2rem; font-weight: 800; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .upgrade-btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white !important; padding: 0.4rem 0.8rem; border-radius: 6px; font-weight: 600; text-decoration: none; font-size: 0.8rem; border: none; cursor: pointer; }
+        
+        /* HEADER */
+        .header { background: white; padding: 0.6rem 0; box-shadow: 0 2px 10px rgba(0,0,0,0.1); z-index: 1000; }
+        .header-content { max-width: 1400px; margin: 0 auto; padding: 0 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.3rem; font-weight: 800; background: linear-gradient(135deg, #667eea, #764ba2); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .upgrade-btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white !important; padding: 0.5rem 0.8rem; border-radius: 8px; font-weight: 600; text-decoration: none; border: none; cursor: pointer; font-size: 0.8rem; }
+
+        /* LAYOUT */
         .main-wrapper { display: flex; flex: 1; padding: 1rem; gap: 1rem; max-width: 1400px; margin: 0 auto; width: 100%; }
         .sidebar { width: 280px; background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(15px); border-radius: 20px; padding: 1.5rem; border: 1px solid rgba(255,255,255,0.2); display: flex; flex-direction: column; gap: 1rem; }
         .sidebar h2 { color: white; font-size: 1.5rem; font-weight: 800; line-height: 1.1; }
-        .smart-select { width: 100%; padding: 0.8rem; border-radius: 10px; border: none; font-size: 0.9rem; cursor: pointer; background: white; margin-top: 5px; }
+        .smart-select { width: 100%; padding: 0.8rem; border-radius: 10px; border: none; font-size: 0.9rem; background: white; cursor: pointer; }
+
+        /* QUADRANTI */
         .quadrant-grid { flex: 1; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; gap: 1rem; }
         .quadrant { background: rgba(255, 255, 255, 0.1); border-radius: 20px; padding: 1rem; border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; }
-        .quadrant-title { color: white; font-size: 0.9rem; margin-bottom: 0.6rem; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 3px; text-transform: uppercase; }
-        .tools-mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: 1; }
-        .tool-card { background: white; border-radius: 12px; padding: 0.6rem; text-align: center; transition: 0.2s; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; text-decoration: none; color: inherit; min-height: 100px; }
-        .tool-card:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
-        .tool-icon { font-size: 1.4rem; margin-bottom: 0.2rem; }
-        .tool-name { font-size: 0.7rem; font-weight: 700; color: #2c3e50; line-height: 1.1; }
-        .tool-badge { font-size: 0.5rem; padding: 2px 4px; border-radius: 4px; margin-top: 4px; color: white; font-weight: bold; text-transform: uppercase; }
+        .quadrant-title { color: white; font-size: 0.9rem; margin-bottom: 0.8rem; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.2); padding-bottom: 4px; text-transform: uppercase; }
+        .tools-mini-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; flex: 1; }
+        
+        .tool-card { background: white; border-radius: 12px; padding: 0.8rem; text-align: center; transition: 0.2s; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100px; text-decoration: none; color: inherit; }
+        .tool-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.2); }
+        .tool-icon { font-size: 1.5rem; margin-bottom: 0.3rem; }
+        .tool-name { font-size: 0.75rem; font-weight: 700; color: #2c3e50; line-height: 1.1; }
+        .tool-badge { font-size: 0.55rem; padding: 2px 5px; border-radius: 5px; margin-top: 5px; color: white; font-weight: bold; text-transform: uppercase; }
+        
         .badge-limited { background: #f39c12; }
         .badge-coming { background: #95a5a6; }
-        #ai-modal { display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 1.5rem; border-radius: 20px; z-index: 2000; width: 95%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+        .badge-free { background: #27ae60; }
+
+        /* MODAL AI */
+        #ai-modal { display:none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 2rem; border-radius: 20px; z-index: 2000; width: 95%; max-width: 500px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
         #modal-overlay { display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1999; }
-        .ai-textarea { width: 100%; height: 120px; padding: 10px; margin-top: 10px; border-radius: 10px; border: 1px solid #ddd; font-family: inherit; resize: none; }
-        .char-counter { display: flex; justify-content: space-between; font-size: 0.7rem; margin-top: 5px; font-weight: 600; }
+        .ai-textarea { width: 100%; height: 130px; padding: 12px; margin-top: 10px; border-radius: 10px; border: 1px solid #ddd; font-family: inherit; resize: none; }
+        .char-counter { display: flex; justify-content: space-between; font-size: 0.75rem; margin-top: 5px; font-weight: 600; }
         .limit-reached { color: #e74c3c !important; }
-        @media (max-width: 900px) { body { overflow-y: auto; } .main-wrapper { flex-direction: column; } .sidebar { width: 100%; } .quadrant-grid { grid-template-columns: 1fr; } }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) { body { overflow-y: auto; height: auto; } .main-wrapper { flex-direction: column; } .sidebar { width: 100%; } .quadrant-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
     <div id="modal-overlay" onclick="closeAI()"></div>
+    
     <div id="ai-modal">
-        <h2 style="font-size: 1.1rem;">🤖 AI Summarizer (Correzione + Riassunto)</h2>
-        <textarea id="ai-input" class="ai-textarea" placeholder="Incolla il testo (anche con errori)..." oninput="checkLimit()"></textarea>
-        <div class="char-counter"><span id="char-count">0 / 500 caratteri</span><span id="limit-msg" class="limit-reached"></span></div>
-        <button id="process-btn" onclick="processAI()" class="upgrade-btn" style="width:100%; border:none; margin-top:10px; padding: 0.8rem; cursor: pointer;">Pulisci, Correggi e Riassumi</button>
-        <div id="ai-response" style="margin-top:10px; padding:10px; background:#f9f9f9; font-size:0.8rem; border-radius:10px; border: 1px dashed #667eea; max-height: 120px; overflow-y: auto;">Risultato...</div>
+        <h2 style="font-size: 1.2rem;">🤖 AI Summarizer</h2>
+        <p style="font-size: 0.75rem; color: #7f8c8d;">Il testo verrà pulito, corretto e riassunto.</p>
+        <textarea id="ai-input" class="ai-textarea" placeholder="Incolla il testo qui..." oninput="checkLimit()"></textarea>
+        
+        <div class="char-counter">
+            <span id="char-count">0 / 500 caratteri</span>
+            <span id="limit-msg" class="limit-reached"></span>
+        </div>
+
+        <button id="process-btn" onclick="processAI()" class="upgrade-btn" style="width:100%; margin-top:15px; padding: 1rem; font-size: 1rem;">Pulisci ed Esegui Riassunto</button>
+        <div id="ai-response" style="margin-top:15px; padding:12px; background:#f9f9f9; font-size:0.85rem; border-radius:10px; border: 1px dashed #667eea; min-height: 50px; max-height: 150px; overflow-y: auto;">Il risultato apparirà qui...</div>
     </div>
 
     <header class="header">
@@ -55,14 +76,12 @@
 
     <div class="main-wrapper">
         <aside class="sidebar">
-            <h2>Converti,<br>Crea,<br>Trasforma</h2>
-            <div style="background: white; padding: 10px; border-radius: 12px;">
-                <label style="font-size: 0.75rem; font-weight: 800;">Azione Rapida</label>
-                <select id="toolSelector" class="smart-select" onchange="if(this.value=='sum')openAI()">
-                    <option value="">Scegli uno strumento...</option>
-                    <option value="sum">📋 Riassumi Testo (Gratis)</option>
-                </select>
-            </div>
+            <h2>Crea & Trasforma</h2>
+            <select class="smart-select" onchange="if(this.value=='sum')openAI()">
+                <option value="">Scegli uno strumento...</option>
+                <option value="sum">📋 Riassumi Testo (Prova Gratis)</option>
+            </select>
+            <p style="color:white; font-size:0.7rem; opacity:0.8; margin-top: auto;">Versione 1.1.0 - Live @ WebExtraordinary</p>
         </aside>
 
         <div class="quadrant-grid">
@@ -87,29 +106,63 @@
                 </div>
             </div>
 
-            <div class="quadrant"><h3 class="quadrant-title">🖼️ Immagini</h3><div class="tools-mini-grid"><div class="tool-card"><div class="tool-icon">🗜️</div><div class="tool-name">Compressor</div><span class="tool-badge badge-coming">COMING SOON</span></div><div class="tool-card"><div class="tool-icon">✂️</div><div class="tool-name">BG Remover</div><span class="tool-badge badge-coming">COMING SOON</span></div><div class="tool-card"><div class="tool-icon">🔄</div><div class="tool-name">Converter</div><span class="tool-badge badge-coming">COMING SOON</span></div><div class="tool-card"><div class="tool-icon">📐</div><div class="tool-name">Resizer</div><span class="tool-badge badge-coming">COMING SOON</span></div></div></div>
+            <div class="quadrant">
+                <h3 class="quadrant-title">🖼️ Immagini</h3>
+                <div class="tools-mini-grid">
+                    <div class="tool-card"><div class="tool-icon">🗜️</div><div class="tool-name">Compressor</div><span class="tool-badge badge-coming">COMING SOON</span></div>
+                    <div class="tool-card"><div class="tool-icon">✂️</div><div class="tool-name">BG Remover</div><span class="tool-badge badge-coming">COMING SOON</span></div>
+                    <div class="tool-card"><div class="tool-icon">🔄</div><div class="tool-name">Converter</div><span class="tool-badge badge-coming">COMING SOON</span></div>
+                    <div class="tool-card"><div class="tool-icon">📐</div><div class="tool-name">Resizer</div><span class="tool-badge badge-coming">COMING SOON</span></div>
+                </div>
+            </div>
             
-            <div class="quadrant"><h3 class="quadrant-title">🎬 Video & Audio</h3><div class="tools-mini-grid"><div class="tool-card"><div class="tool-icon">🎞️</div><div class="tool-name">Video to GIF</div><span class="tool-badge badge-coming">COMING SOON</span></div><div class="tool-card"><div class="tool-icon">🎵</div><div class="tool-name">Audio Conv.</div><span class="tool-badge badge-coming">COMING SOON</span></div><div class="tool-card"><div class="tool-icon">✂️</div><div class="tool-name">Trimmer</div><span class="tool-badge badge-coming">COMING SOON</span></div></div></div>
+            <div class="quadrant">
+                <h3 class="quadrant-title">🎬 Video & Audio</h3>
+                <div class="tools-mini-grid">
+                    <div class="tool-card"><div class="tool-icon">🎞️</div><div class="tool-name">Video to GIF</div><span class="tool-badge badge-coming">COMING SOON</span></div>
+                    <div class="tool-card"><div class="tool-icon">🎵</div><div class="tool-name">Audio Conv.</div><span class="tool-badge badge-coming">COMING SOON</span></div>
+                    <div class="tool-card"><div class="tool-icon">✂️</div><div class="tool-name">Trimmer</div><span class="tool-badge badge-coming">COMING SOON</span></div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
+        // --- CONFIGURAZIONE TOKEN ---
+        const MY_TOKEN = "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"; 
+        // ----------------------------
+
         const isPremium = new URLSearchParams(window.location.search).get('access') === 'PRO_VERIFIED_2026';
+        
         function openAI() { document.getElementById('modal-overlay').style.display='block'; document.getElementById('ai-modal').style.display='block'; }
         function closeAI() { document.getElementById('modal-overlay').style.display='none'; document.getElementById('ai-modal').style.display='none'; }
         
         function sanitizzaTesto(t) { 
-            return t.replace(/(https?:\/\/[^\s]+)/g, '').replace(/[^\w\sàèìòùÀÈÌÒÙáéíóúÁÉÍÓÚ.,!?;:-]/gi, '').replace(/\s+/g, ' ').trim(); 
+            return t.replace(/(https?:\/\/[^\s]+)/g, '')
+                    .replace(/[^\w\sàèìòùÀÈÌÒÙáéíóúÁÉÍÓÚ.,!?;:-]/gi, '')
+                    .replace(/\s+/g, ' ')
+                    .trim(); 
         }
 
         function checkLimit() {
             if (isPremium) return;
             const input = document.getElementById('ai-input');
             const counter = document.getElementById('char-count');
+            const msg = document.getElementById('limit-msg');
+            const btn = document.getElementById('process-btn');
             const count = input.value.length;
             counter.innerText = `${count} / 500 caratteri`;
-            if (count > 500) { counter.classList.add('limit-reached'); document.getElementById('process-btn').innerText = "Sblocca PRO"; }
-            else { counter.classList.remove('limit-reached'); document.getElementById('process-btn').innerText = "Pulisci, Correggi e Riassumi"; }
+            if (count > 500) {
+                counter.classList.add('limit-reached');
+                msg.innerText = "MAX! ⚡";
+                btn.innerText = "Sblocca PRO";
+                btn.style.background = "#f39c12";
+            } else {
+                counter.classList.remove('limit-reached');
+                msg.innerText = "";
+                btn.innerText = "Pulisci ed Esegui Riassunto";
+                btn.style.background = "linear-gradient(135deg, #667eea, #764ba2)";
+            }
         }
 
         async function processAI() {
@@ -117,42 +170,53 @@
             const resDiv = document.getElementById('ai-response');
             const btn = document.getElementById('process-btn');
 
+            if (!MY_TOKEN || MY_TOKEN.startsWith("INCOLLA")) {
+                return alert("Errore di configurazione. Token AI mancante.");
+            }
+
             let cleanText = sanitizzaTesto(inputArea.value);
             inputArea.value = cleanText; 
+            checkLimit();
 
             if (!cleanText) return alert("Inserisci un testo!");
             if (!isPremium && cleanText.length > 500) return alert("Soglia superata!");
 
             btn.disabled = true;
-            resDiv.innerHTML = "🧹 Pulizia e ottimizzazione... (Tentativo 1/2)";
+            resDiv.innerHTML = "✨ L'AI sta leggendo e correggendo... attendi...";
 
-            // PIANO A + PIANO B
             const modelA = "https://api-inference.huggingface.co/models/facebook/bart-large-cnn";
             const modelB = "https://api-inference.huggingface.co/models/google/pegasus-xsum";
 
             async function callAI(url, t) {
                 const r = await fetch(url, { 
                     method: "POST", 
-                    headers: { "Content-Type": "application/json" }, 
-                    body: JSON.stringify({ inputs: "Correggi errori grammaticali e riassumi: " + t }) 
+                    headers: { "Content-Type": "application/json", "Authorization": `Bearer ${MY_TOKEN}` }, 
+                    body: JSON.stringify({ inputs: "Summarize and correct this Italian text: " + t, parameters: { wait_for_model: true } })
                 });
                 if (!r.ok) throw new Error();
                 const d = await r.json();
-                return d[0].summary_text;
+                return d[0].summary_text || d[0].generated_text;
             }
 
             try {
                 const res = await callAI(modelA, cleanText);
-                resDiv.innerHTML = "✅ <b>Riassunto Corretto:</b><br>" + res;
+                resDiv.innerHTML = "✅ <b>Risultato:</b><br>" + res;
             } catch (e) {
-                resDiv.innerHTML = "⏳ Cambio motore... (Tentativo 2/2)";
+                resDiv.innerHTML = "⏳ Cambio motore... (2/2)";
                 try {
                     const res = await callAI(modelB, cleanText);
-                    resDiv.innerHTML = "✅ <b>Riassunto Corretto:</b><br>" + res;
+                    resDiv.innerHTML = "✅ <b>Risultato:</b><br>" + res;
                 } catch (e2) {
-                    resDiv.innerHTML = "🚀 <b>Sistema Saturo.</b> Carica il file su GitHub per bypassare le restrizioni del browser!";
+                    resDiv.innerHTML = "⚠️ Il sistema è molto affollato. Riprova tra 30 secondi.";
                 }
             } finally { btn.disabled = false; }
+        }
+
+        if(isPremium) {
+            document.getElementById('sum-badge').innerHTML = "SBLOCCATO";
+            document.getElementById('sum-badge').className = "tool-badge badge-free";
+            document.getElementById('char-count').innerText = "Versione PRO attiva";
+            document.getElementById('nav-btn').style.display = "none";
         }
     </script>
 </body>
